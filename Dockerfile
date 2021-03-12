@@ -3,7 +3,7 @@ FROM ubuntu:20.04
 RUN export DEBIAN_FRONTEND=noninteractive && \
 	apt-get update && \
 	apt-get upgrade -y --quiet > /dev/null && \
-	apt-get install -y --quiet python3-pip software-properties-common apt-utils apt-transport-https build-essential curl && \
+	apt-get install -y --quiet python3-pip software-properties-common apt-utils apt-transport-https build-essential curl git && \
 	curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - && \
 	apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com focal main" && \
 	apt-get update && \
