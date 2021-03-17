@@ -18,6 +18,12 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
 	apt-get update && \
 	apt-get upgrade -y --quiet > /dev/null && \
 	apt-get install -y --quiet python3-pip software-properties-common apt-utils apt-transport-https build-essential curl git && \
+	curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
+        echo "deb https://apt.kubernetes.io/ kubernetes-focal main" > /etc/apt/sources.list.d/kubernetes.list && \
+	echo "deb https://baltocdn.com/helm/stable/debian/ all main" > /etc/apt/sources.list.d/helm-stable-debian.list && \
+        apt-get update && \
+	apt-get install -y kubectl && \
+	apt-get install -y helm && \	
 	pip3 install awscli awsume && \
 	rm -rf /var/lib/apt/lists/*
 	
