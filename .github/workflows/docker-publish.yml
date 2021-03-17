@@ -35,7 +35,12 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build image
-        run: docker build . --file Dockerfile --platform linux/amd64,linux/arm64 --tag $IMAGE_NAME
+        run: |
+         export DOCKER_BUILDKIT=1
+         docker build --platform=local -o . git://github.com/docker/buildx
+         mkdir -p ~/.docker/cli-plugins
+         mv buildx ~/.docker/cli-plugins/docker-buildx
+         docker buildx build . --file Dockerfile --platform linux/amd64,linux/arm64 --tag $IMAGE_NAME
 
       - name: Push image
         run: |
