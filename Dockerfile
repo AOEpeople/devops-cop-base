@@ -3,9 +3,9 @@ ARG TARGETARCH
 ARG TERRAFORM_VERSION=0.14.8
 
 RUN apk add --no-cache git bash openssh curl
-RUN curl -sSLO https://github.com/hashicorp/terraform/archive/v${TERRAFORM_VERSION}.zip
-RUN unzip v${TERRAFORM_VERSION}.zip
-RUN cd terraform-${TERRAFORM_VERSION} && \
+RUN curl -sSL -o terrraform.zip https://github.com/hashicorp/terraform/archive/v${TERRAFORM_VERSION}.zip
+RUN unzip terrraform.zip >/dev/null
+RUN cd terraform && \
 	 XC_ARCH=$TARGETARCH XC_OS=linux bash scripts/build.sh && \
 	 cp bin/terraform ../
 
@@ -19,8 +19,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
 	apt-get upgrade -y --quiet > /dev/null && \
 	apt-get install -y --quiet python3-pip software-properties-common apt-utils apt-transport-https build-essential curl git && \
 	pip3 install awscli awsume && \
-	apt-get update && \
-	apt-get install -y --quiet terraform && \
-	curl -sSL -o /usr/local/bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VERSION}/terragrunt_linux_$TARGETARCH && \
-	chmod +x /usr/local/bin/terragrunt && \
 	rm -rf /var/lib/apt/lists/*
+	
+RUN curl -sSL -o /usr/local/bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VERSION}/terragrunt_linux_$TARGETARCH && \
+	chmod +x /usr/local/bin/terragrunt
