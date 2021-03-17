@@ -27,10 +27,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      # Docker see https://blog.oddbit.com/post/2020-09-25-building-multi-architecture-im/
       - name: Prepare
         id: prep
         run: |
-          DOCKER_IMAGE=ghcr.io/${{ github.repository }}/$IMAGE_NAME
+          REPONAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:])
+          DOCKER_IMAGE=ghcr.io/$REPONAME/$IMAGE_NAME
           VERSION=latest
           SHORTREF=${GITHUB_SHA::8}
 
