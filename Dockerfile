@@ -3,9 +3,9 @@ ARG TARGETARCH
 ARG TERRAFORM_VERSION=0.14.8
 
 RUN apk add --no-cache git bash openssh curl
-RUN curl -sSL -o terrraform.zip https://github.com/hashicorp/terraform/archive/v${TERRAFORM_VERSION}.zip
-RUN unzip terrraform.zip >/dev/null
-RUN cd terraform && \
+RUN curl -sSL -o terraform.zip https://github.com/hashicorp/terraform/archive/v${TERRAFORM_VERSION}.zip
+RUN unzip terraform.zip >/dev/null
+RUN cd terraform-${TERRAFORM_VERSION} && \
 	 XC_ARCH=$TARGETARCH XC_OS=linux bash scripts/build.sh && \
 	 cp bin/terraform ../
 
