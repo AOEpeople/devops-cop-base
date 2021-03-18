@@ -42,10 +42,10 @@ jobs:
           fi
 
           SHORTREF=${GITHUB_SHA::8}
-
-          TAGS="${DOCKER_IMAGE}:${VERSION},${DOCKER_IMAGE}:${TERRAFORM_VERSION},${DOCKER_IMAGE}:${SHORTREF}"
+          TAGS="${DOCKER_IMAGE}:v${VERSION},${DOCKER_IMAGE}:${TERRAFORM_VERSION}"
 
           # Set output parameters.
+          echo ::set-output name=shortref::${SHORTREF}
           echo ::set-output name=tags::${TAGS}
           echo ::set-output name=docker_image::${DOCKER_IMAGE}
           echo ::set-output name=terraform_version::${TERRAFORM_VERSION:1}
