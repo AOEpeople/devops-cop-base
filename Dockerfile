@@ -20,6 +20,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
 	apt-get install -y --quiet python3-pip software-properties-common apt-utils apt-transport-https build-essential curl git && \
 	curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
         echo "deb https://apt.kubernetes.io/ kubernetes-focal main" > /etc/apt/sources.list.d/kubernetes.list && \
+	curl -s https://baltocdn.com/helm/signing.asc | apt-key add - && \
 	echo "deb https://baltocdn.com/helm/stable/debian/ all main" > /etc/apt/sources.list.d/helm-stable-debian.list && \
         apt-get update && \
 	apt-get install -y kubectl && \
