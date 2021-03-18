@@ -13,16 +13,15 @@ on:
   # Run tests for any PRs.
   pull_request:
 
-env:
-  # TODO: Change variable to your image's name.
-  IMAGE_NAME: bleeding-edge
-
 jobs:
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
   push:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
+    strategy:
+      matrix:
+        terraform: [0.13, 0.14, 0]
 
     steps:
       - uses: actions/checkout@v2
@@ -32,26 +31,25 @@ jobs:
         id: prep
         run: |
           REPONAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]' )
-          DOCKER_IMAGE=ghcr.io/$REPONAME/$IMAGE_NAME
+          DOCKER_IMAGE=ghcr.io/$REPONAME
           VERSION=latest
+          TERRAFORM_VERSION=$(curl -sSL https://api.github.com/repos/hashicorp/terraform/tags | jq -r '.[] | .name' | head -n1)
+          TERRAGRUNT_VERSION=$(curl -sSL https://api.github.com/repos/gruntwork-io/terragrunt/tags | jq -r '.[] | .name' | head -n1)
+
+          if [ "${{ matrix.terraform }}" -get 0]; then
+            VERSION=${{ matrix.terraform }}
+            TERRAFORM_VERSION=$(curl -sSL https://api.github.com/repos/hashicorp/terraform/tags | jq -r '.[] | .name  | select(. | startswith("v${{ matrix.terraform }}"))' | head -n1)
+          fi
+
           SHORTREF=${GITHUB_SHA::8}
 
-          # If this is git tag, use the tag name as a docker tag
-          if [[ $GITHUB_REF == refs/tags/* ]]; then
-            VERSION=${GITHUB_REF#refs/tags/v}
-          fi
-          TAGS="${DOCKER_IMAGE}:${VERSION},${DOCKER_IMAGE}:${SHORTREF}"
-
-          # If the VERSION looks like a version number, assume that
-          # this is the most recent version of the image and also
-          # tag it 'latest'.
-          if [[ $VERSION =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
-            TAGS="$TAGS,${DOCKER_IMAGE}:latest"
-          fi
+          TAGS="${DOCKER_IMAGE}:${VERSION},${DOCKER_IMAGE}:${TERRAFORM_VERSION},${DOCKER_IMAGE}:${SHORTREF}"
 
           # Set output parameters.
           echo ::set-output name=tags::${TAGS}
           echo ::set-output name=docker_image::${DOCKER_IMAGE}
+          echo ::set-output name=terraform_version::${TERRAFORM_VERSION:1}
+          echo ::set-output name=terragrunt_version::${TERRAGRUNT_VERSION:1}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@master
@@ -76,5 +74,8 @@ jobs:
           context: .
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
+          build-args: |
+            TERRAFORM_VERSION=${{ steps.prep.outputs.terraform_version }}
+            TERRAGRUNT_VERSION=${{ steps.prep.outputs.terragrunt_version }}
           push: true
           tags: ${{ steps.prep.outputs.tags }}
