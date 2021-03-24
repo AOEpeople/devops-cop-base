@@ -17,7 +17,7 @@ COPY --from=0 /go/terraform /usr/local/bin
 RUN export DEBIAN_FRONTEND=noninteractive && \
 	apt-get update && \
 	apt-get upgrade -y --quiet > /dev/null && \
-	apt-get install -y --quiet python3-pip software-properties-common apt-utils apt-transport-https build-essential curl git && \
+	apt-get install -y --quiet python3-pip software-properties-common apt-utils apt-transport-https build-essential curl git jq && \
 	curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
         echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list && \
 	curl -s https://baltocdn.com/helm/signing.asc | apt-key add - && \
