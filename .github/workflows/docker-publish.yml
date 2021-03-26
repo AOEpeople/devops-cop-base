@@ -20,6 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
     strategy:
+      fail-fast: false
       matrix:
         terraform: ['0.13', '0.14', 'latest']
 
