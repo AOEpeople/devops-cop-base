@@ -37,8 +37,8 @@ jobs:
           REPONAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]' )
           DOCKER_IMAGE=ghcr.io/$REPONAME
           VERSION=latest
-          TERRAFORM_VERSION=$(curl -sSL https://api.github.com/repos/hashicorp/terraform/tags | jq -r '.[] | .name' | head -n1)
           TERRAGRUNT_VERSION=$(curl -sSL https://api.github.com/repos/gruntwork-io/terragrunt/tags | jq -r '.[] | .name' | head -n1)
+          TERRAFORM_VERSION=""
 
           if [ "${{ matrix.terraform }}" != 'latest' ]; then
             VERSION="v${{ matrix.terraform }}"
@@ -49,6 +49,8 @@ jobs:
                 let "TAG_PAGE=TAG_PAGE+1"
                 sleep 10
             done
+          else
+            TERRAFORM_VERSION="$(curl -sSL https://api.github.com/repos/hashicorp/terraform/tags | jq -r '.[] | .name' | head -n1)"
           fi
 
           SHORTREF=${GITHUB_SHA::8}
