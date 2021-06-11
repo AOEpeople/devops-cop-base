@@ -42,7 +42,13 @@ jobs:
 
           if [ "${{ matrix.terraform }}" != 'latest' ]; then
             VERSION="v${{ matrix.terraform }}"
-            TERRAFORM_VERSION=$(curl -sSL https://api.github.com/repos/hashicorp/terraform/tags | jq -r '.[] | .name  | select(. | startswith("v${{ matrix.terraform }}"))' | head -n1)
+            TAG_PAGE=1
+            while [ -z "$TERRAFORM_VERSION" -a $TAG_PAGE -le 10 ]; do
+                echo "$TERRAFORM_VERSION - $TAG_PAGE"
+                TERRAFORM_VERSION=$(curl -sSL "https://api.github.com/repos/hashicorp/terraform/tags?page=$TAG_PAGE" | jq -r '.[] | .name  | select(. | startswith("v${{ matrix.terraform }}."))' | head -n1)
+                let "TAG_PAGE=TAG_PAGE+1"
+                sleep 10
+            done
           fi
 
           SHORTREF=${GITHUB_SHA::8}
