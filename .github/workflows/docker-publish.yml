@@ -37,6 +37,8 @@ jobs:
           DOCKER_IMAGE=ghcr.io/$REPONAME
           VERSION=latest
           TERRAGRUNT_VERSION=$(curl -sSL https://api.github.com/repos/gruntwork-io/terragrunt/tags | jq -r '.[] | .name' | head -n1)
+          VAULT_VERSION=$(curl -sSL https://api.github.com/repos/hashicorp/vault/tags | jq -r '.[] | .name | match("\\d+.\\d+.\\d+$") | .string' | head -n1)
+
           TERRAFORM_VERSION=""
 
           if [ "${{ matrix.terraform }}" != 'latest' ]; then
@@ -61,6 +63,7 @@ jobs:
           echo ::set-output name=docker_image::${DOCKER_IMAGE}
           echo ::set-output name=terraform_version::${TERRAFORM_VERSION:1}
           echo ::set-output name=terragrunt_version::${TERRAGRUNT_VERSION:1}
+          echo ::set-output name=vault_version::${VAULT_VERSION:1}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@master
@@ -88,5 +91,6 @@ jobs:
           build-args: |
             TERRAFORM_VERSION=${{ steps.prep.outputs.terraform_version }}
             TERRAGRUNT_VERSION=${{ steps.prep.outputs.terragrunt_version }}
+            VAULT_VERSION=${{ steps.prep.outputs.vault_version }}
           push: true
           tags: ${{ steps.prep.outputs.tags }}
