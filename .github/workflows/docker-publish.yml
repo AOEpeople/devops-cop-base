@@ -63,7 +63,7 @@ jobs:
           echo ::set-output name=docker_image::${DOCKER_IMAGE}
           echo ::set-output name=terraform_version::${TERRAFORM_VERSION:1}
           echo ::set-output name=terragrunt_version::${TERRAGRUNT_VERSION:1}
-          echo ::set-output name=vault_version::${VAULT_VERSION:1}
+          echo ::set-output name=vault_version::${VAULT_VERSION}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@master
