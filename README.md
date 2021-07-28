@@ -17,4 +17,5 @@ Included tools:
 * [Vault](https://github.com/hashicorp/vault)
 * [Kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 * [Helm](https://helm.sh/)
+* [Helmfile](https://github.com/roboll/helmfile)
 * [awsume](https://awsu.me/)
