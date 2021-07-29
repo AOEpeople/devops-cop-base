@@ -16,9 +16,9 @@ RUN cd terraform-${TERRAFORM_VERSION} && \
 RUN curl -sSL -o helm-diff.zip https://github.com/databus23/helm-diff/archive/refs/tags/v3.1.3.zip
 RUN unzip helm-diff.zip >/dev/null
 RUN cd helm-diff-${HELMDIFF_VERSION} && \
-	 XC_ARCH=$TARGETARCH XC_OS=linux make build && \
-	 mkdir -p /go/dist/helm-diff && \
-	 cp ./bin/diff /go/dist/helm-diff/bin && \
+	 XC_ARCH=$TARGETARCH XC_OS=linux CGO_ENABLED=0 make build && \
+	 mkdir -p /go/dist/helm-diff/bin && \
+	 cp ./bin/diff /go/dist/helm-diff/bin/diff && \
      cp ./plugin.yaml /go/dist/helm-diff
 
 FROM ubuntu:20.04
