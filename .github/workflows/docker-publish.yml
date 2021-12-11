@@ -24,7 +24,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        terraform: ['0.14', '0.15', '1.0', 'latest']
+        terraform: ['0.15', '1.0', '1.1', 'latest']
 
     steps:
       - uses: actions/checkout@v2
