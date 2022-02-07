@@ -1,5 +1,20 @@
 {
   "extends": [
-    "config:base"
+    "config:base",
+    ":rebaseStalePrs",
+    ":prNotPending"
+  ],
+  "stabilityDays": 3,
+
+
+  "regexManagers": [
+    {
+      "description": "Update _VERSION variables in gitlab-ci configs",
+      "fileMatch": ["\\.yml$"],
+      "matchStrings": [
+        "#\\s*renovate: datasource=(?<datasource>[a-z-]+?) depName=(?<depName>.+?)(?: lookupName=(?<lookupName>.+?))?(?: versioning=(?<versioning>[a-z-]+?))?\\s.+?_VERSION:\\s*(?<currentValue>.+?)\\s"
+      ],
+      "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
+    }
   ]
 }
