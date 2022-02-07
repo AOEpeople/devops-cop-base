@@ -22,9 +22,9 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
 	pip3 install awscli awsume && \
 	rm -rf /var/lib/apt/lists/*
 
-RUN curl -sSL -o terraform_${TERRAFORM_VERSION}_linux_amd64.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
-    unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
-    rm terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
+RUN curl -sSL -o terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip && \
+    unzip terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip && \
+    rm terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip && \
     mv terraform /usr/local/bin/terraform
 
 RUN helm plugin install https://github.com/databus23/helm-diff
