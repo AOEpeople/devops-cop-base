@@ -18,7 +18,7 @@ ARG TERRAGRUNT_VERSION=0.35.9
 ARG VAULT_VERSION=1.7.3
 
 RUN mkdir -p /opt/aoepeople/bin && \
-    apk add --no-cache ca-certificates gnupg curl gzip jq procps tar wget unzip git python3 py3-pip && \
+    apk add --no-cache ca-certificates gnupg curl gzip jq procps tar wget unzip git bash zsh  docker openrc python3 py3-pip && \
         pip3 install --upgrade pip && \
         pip3 install --no-cache-dir awscli && \
         rm -rf /var/cache/apk/*
