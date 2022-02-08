@@ -108,7 +108,6 @@ jobs:
           push: true
           tags: ${{ steps.prep.outputs.tags }}
 
-
       - name: Build Buster
         uses: docker/build-push-action@v2
         with:
@@ -125,3 +124,20 @@ jobs:
             VAULT_VERSION=${{ steps.prep.outputs.vault_version }}
           push: true
           tags: ${{ steps.prep.outputs.tags }}-buster
+
+      - name: Build Alpine
+        uses: docker/build-push-action@v2
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          context: ./alpine
+          file: ./alpine/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          build-args: |
+            HELMFILE_VERSION=${{  steps.prep.outputs.helmfile_version }}
+            HELM_VERSION=${{  steps.prep.outputs.helm_version }}
+            KUBECTL_VERSION=${{  steps.prep.outputs.kubectl_version }}
+            TERRAFORM_VERSION=${{ steps.prep.outputs.terraform_version }}
+            TERRAGRUNT_VERSION=${{ steps.prep.outputs.terragrunt_version }}
+            VAULT_VERSION=${{ steps.prep.outputs.vault_version }}
+          push: true
+          tags: ${{ steps.prep.outputs.tags }}-alpine
