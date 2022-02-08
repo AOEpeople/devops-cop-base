@@ -20,7 +20,8 @@ ARG TERRAFORM_VERSION=0.15.5
 ARG TERRAGRUNT_VERSION=0.35.9
 ARG VAULT_VERSION=1.7.3
 
-RUN install_packages ca-certificates gnupg curl gzip jq procps tar wget unzip git awscli
+RUN mkdir -p /opt/aoepeople/bin && \
+    install_packages ca-certificates gnupg curl gzip jq procps tar wget unzip git awscli
 
 RUN curl -sSLO "https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/${TARGETARCH}/kubectl" && \
 #    curl -LO "https://dl.k8s.io/v${KUBECTL_VERSION}/bin/linux/${OS_ARCH}/kubectl.sha256" && \
