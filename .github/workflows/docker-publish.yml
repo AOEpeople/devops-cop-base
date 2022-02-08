@@ -27,6 +27,7 @@ env:
   TERRAGRUNT_VERSION: 0.36.1
   # renovate: datasource=github-releases depName=hashicorp/vault
   VAULT_VERSION: 1.9.3
+
 jobs:
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
@@ -97,8 +98,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           builder: ${{ steps.buildx.outputs.name }}
-          context: .
-          file: ./Dockerfile
+          context: ./ubuntu
+          file: ./ubuntu/Dockerfile
           platforms: linux/amd64,linux/arm64
           build-args: |
             TERRAFORM_VERSION=${{ steps.prep.outputs.terraform_version }}
