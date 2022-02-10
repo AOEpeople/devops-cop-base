@@ -1,7 +1,7 @@
 FROM ubuntu:20.04
 ARG TARGETARCH
 ARG TERRAFORM_VERSION=0.15.5
-ARG TERRAGRUNT_VERSION=0.35.9
+ARG TERRAGRUNT_VERSION=0.36.1
 ARG VAULT_VERSION=1.7.3
 ARG HELMFILE_VERSION=0.142.0
 
@@ -29,10 +29,10 @@ RUN curl -sSL -o terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip https://
 
 RUN helm plugin install https://github.com/databus23/helm-diff
 
-RUN curl -sSL -o /usr/local/bin/helmfile https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_$TARGETARCH && \
+RUN curl -sSL -o /usr/local/bin/helmfile https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_${TARGETARCH} && \
 	chmod +x /usr/local/bin/helmfile
-	
-RUN curl -sSL -o /usr/local/bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VERSION}/terragrunt_linux_$TARGETARCH && \
+
+RUN curl -sSL -o /usr/local/bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VERSION}/terragrunt_linux_${TARGETARCH} && \
 	chmod +x /usr/local/bin/terragrunt
 
 RUN curl -sSL -o vault.zip https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_${TARGETARCH}.zip && \

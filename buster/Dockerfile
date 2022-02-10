@@ -48,11 +48,11 @@ RUN curl -sSL -o helm-v${HELM_VERSION}-linux-${TARGETARCH}.tar.gz https://get.he
 
 RUN helm plugin install https://github.com/databus23/helm-diff
 
-RUN curl -sSL -o helmfile https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_$TARGETARCH && \
+RUN curl -sSL -o helmfile https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_${TARGETARCH} && \
     install -o root -g root -m 0755 helmfile /opt/aoepeople/bin/helmfile && \
 	rm helmfile
 
-RUN curl -sSL -o terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VERSION}/terragrunt_linux_$TARGETARCH && \
+RUN curl -sSL -o terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VERSION}/terragrunt_linux_${TARGETARCH} && \
     install -o root -g root -m 0755 terragrunt /opt/aoepeople/bin/terragrunt && \
     rm terragrunt
 
