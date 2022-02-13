@@ -65,11 +65,15 @@ jobs:
           fi
 
           SHORTREF=${GITHUB_SHA::8}
-          TAGS="${DOCKER_IMAGE}:${VERSION},${DOCKER_IMAGE}:${TERRAFORM_VERSION}"
+          UBUNTU_TAGS="${DOCKER_IMAGE}:${VERSION},${DOCKER_IMAGE}:${TERRAFORM_VERSION}"
+          ALPINE_TAGS="${DOCKER_IMAGE}:${VERSION}-alpine,${DOCKER_IMAGE}:${TERRAFORM_VERSION}-alpine"
+          BUSTER_TAGS="${DOCKER_IMAGE}:${VERSION}-buster,${DOCKER_IMAGE}:${TERRAFORM_VERSION}-buster"
 
           # Set output parameters.
           echo ::set-output name=shortref::${SHORTREF}
-          echo ::set-output name=tags::${TAGS}
+          echo ::set-output name=ubuntu_tags::${UBUNTU_TAGS}
+          echo ::set-output name=alpine_tags::${ALPINE_TAGS}
+          echo ::set-output name=buster_tags::${BUSTER_TAGS}
           echo ::set-output name=docker_image::${DOCKER_IMAGE}
           echo ::set-output name=terraform_version::${TERRAFORM_VERSION:1}
           echo ::set-output name=terragrunt_version::${TERRAGRUNT_VERSION}
@@ -94,7 +98,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build
+      - name: Build Ubuntu
         uses: docker/build-push-action@v2
         with:
           builder: ${{ steps.buildx.outputs.name }}
@@ -106,7 +110,7 @@ jobs:
             TERRAGRUNT_VERSION=${{ steps.prep.outputs.terragrunt_version }}
             VAULT_VERSION=${{ steps.prep.outputs.vault_version }}
           push: true
-          tags: ${{ steps.prep.outputs.tags }}
+          tags: ${{ steps.prep.outputs.ubuntu_tags }}
 
       - name: Build Buster
         uses: docker/build-push-action@v2
@@ -123,7 +127,7 @@ jobs:
             TERRAGRUNT_VERSION=${{ steps.prep.outputs.terragrunt_version }}
             VAULT_VERSION=${{ steps.prep.outputs.vault_version }}
           push: true
-          tags: ${{ steps.prep.outputs.tags }}-buster
+          tags: ${{ steps.prep.outputs.buster_tags }}
 
       - name: Build Alpine
         uses: docker/build-push-action@v2
@@ -140,4 +144,4 @@ jobs:
             TERRAGRUNT_VERSION=${{ steps.prep.outputs.terragrunt_version }}
             VAULT_VERSION=${{ steps.prep.outputs.vault_version }}
           push: true
-          tags: ${{ steps.prep.outputs.tags }}-alpine
+          tags: ${{ steps.prep.outputs.alpine_tags }}
