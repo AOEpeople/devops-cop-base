@@ -27,7 +27,8 @@ RUN curl -sSLO "https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/${TARGET
 #    curl -LO "https://dl.k8s.io/v${KUBECTL_VERSION}/bin/linux/${OS_ARCH}/kubectl.sha256" && \
 #    echo "$(<kubectl.sha256)  kubectl" | sha256sum --check && \
     install -o root -g root -m 0755 kubectl /opt/aoepeople/bin/kubectl && \
-    mkdir /.kube && chmod g+rwX /.kube
+    mkdir /.kube && chmod g+rwX /.kube && \
+    kubectl version --client=true
 
 RUN curl -sSLO "https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/${TARGETARCH}/kubectl-convert" && \
 # curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl-convert.sha256" && \
@@ -38,28 +39,34 @@ RUN curl -sSL -o terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip https://
     unzip terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip && \
     rm terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip && \
     install -o root -g root -m 0755 terraform /opt/aoepeople/bin/terraform && \
-    rm terraform
+    rm terraform && \
+    terraform -version
 
 RUN curl -sSL -o helm-v${HELM_VERSION}-linux-${TARGETARCH}.tar.gz https://get.helm.sh/helm-v${HELM_VERSION}-linux-${TARGETARCH}.tar.gz && \
     tar -xzf helm-v${HELM_VERSION}-linux-${TARGETARCH}.tar.gz && \
     install -o root -g root -m 0755 linux-${TARGETARCH}/helm /opt/aoepeople/bin/helm && \
     rm helm-v${HELM_VERSION}-linux-${TARGETARCH}.tar.gz && \
-    rm -Rf linux-${TARGETARCH}
+    rm -Rf linux-${TARGETARCH} && \
+    helm version
 
-RUN helm plugin install https://github.com/databus23/helm-diff
+RUN helm plugin install https://github.com/databus23/helm-diff && \
+    helm diff version
 
 RUN curl -sSL -o helmfile https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_${TARGETARCH} && \
     install -o root -g root -m 0755 helmfile /opt/aoepeople/bin/helmfile && \
-	rm helmfile
+	rm helmfile && \
+    helmfile version
 
 RUN curl -sSL -o terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VERSION}/terragrunt_linux_${TARGETARCH} && \
     install -o root -g root -m 0755 terragrunt /opt/aoepeople/bin/terragrunt && \
-    rm terragrunt
+    rm terragrunt && \
+    terragrunt -version
 
 RUN curl -sSL -o vault.zip https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_${TARGETARCH}.zip && \
     unzip vault.zip > /dev/null && \
     install -o root -g root -m 0755 vault /opt/aoepeople/bin/vault && \
     rm vault && \
-    rm vault.zip
+    rm vault.zip && \
+    vault --version
 
 USER 1001

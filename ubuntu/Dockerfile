@@ -25,17 +25,22 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
 RUN curl -sSL -o terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip && \
     unzip terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip && \
     rm terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip && \
-    mv terraform /usr/local/bin/terraform
+    mv terraform /usr/local/bin/terraform && \
+    terraform -version
 
-RUN helm plugin install https://github.com/databus23/helm-diff
+RUN helm plugin install https://github.com/databus23/helm-diff && \
+    helm diff version
 
 RUN curl -sSL -o /usr/local/bin/helmfile https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_${TARGETARCH} && \
-	chmod +x /usr/local/bin/helmfile
+	chmod +x /usr/local/bin/helmfile && \
+	helmfile version
 
 RUN curl -sSL -o /usr/local/bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VERSION}/terragrunt_linux_${TARGETARCH} && \
-	chmod +x /usr/local/bin/terragrunt
+	chmod +x /usr/local/bin/terragrunt && \
+    terragrunt -version
 
 RUN curl -sSL -o vault.zip https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_${TARGETARCH}.zip && \
     unzip vault.zip > /dev/null && \
     mv vault /usr/local/bin && \
-    rm vault.zip
+    rm vault.zip && \
+    vault --version
