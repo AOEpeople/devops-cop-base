@@ -18,4 +18,5 @@ Included tools:
 * [Kubectl](https://kubernetes.io/docs/reference/kubectl/overview/)
 * [Helm](https://helm.sh/)
 * [Helmfile](https://github.com/roboll/helmfile)
+* [awscli](https://aws.amazon.com/cli/)
 * [awsume](https://awsu.me/)

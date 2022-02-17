@@ -19,7 +19,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
 	apt-get install -y kubectl && \
 	apt-get install -y helm && \
 	apt-get install -y docker-ce-cli && \
-	pip3 install awscli awsume && \
+	pip3 install awsume && \
 	rm -rf /var/lib/apt/lists/*
 
 RUN curl -sSL -o terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip && \
@@ -44,3 +44,8 @@ RUN curl -sSL -o vault.zip https://releases.hashicorp.com/vault/${VAULT_VERSION}
     mv vault /usr/local/bin && \
     rm vault.zip && \
     vault --version
+
+RUN curl -sSL -o awscliv2.zip https://awscli.amazonaws.com/awscli-exe-linux-${TARGETARCH}.zip && \
+    unzip awscliv2.zip && \
+    ./aws/install && \
+    rm -rf awscliv2.zip
