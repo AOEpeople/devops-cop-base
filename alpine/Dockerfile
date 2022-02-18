@@ -20,7 +20,6 @@ ARG VAULT_VERSION=1.7.3
 RUN mkdir -p /opt/aoepeople/bin && \
     apk add --no-cache ca-certificates gnupg curl gzip jq procps tar wget unzip git bash zsh  docker openrc python3 py3-pip && \
         pip3 install --upgrade pip && \
-        pip3 install --no-cache-dir awscli && \
         rm -rf /var/cache/apk/*
 
 RUN curl -sSLO "https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/${TARGETARCH}/kubectl" && \
@@ -69,4 +68,13 @@ RUN curl -sSL -o vault.zip https://releases.hashicorp.com/vault/${VAULT_VERSION}
     rm vault.zip && \
     vault --version
 
-USER 1001
+RUN if [ "${TARGETARCH}" = "amd64" ] ; then \
+    curl -sSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"; \
+  else \
+    curl -sSL "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip"; \
+  fi && \
+  unzip -q awscliv2.zip && \
+  ./aws/install && \
+  rm -rf awscliv2.zip && \
+  rm -rf aws/ && \
+  aws --version
