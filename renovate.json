@@ -6,7 +6,6 @@
   ],
   "stabilityDays": 3,
 
-
   "regexManagers": [
     {
       "description": "Update _VERSION variables in gitlab-ci configs",

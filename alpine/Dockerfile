@@ -16,6 +16,7 @@ ARG KUBECTL_VERSION=1.23.3
 ARG TERRAFORM_VERSION=0.15.5
 ARG TERRAGRUNT_VERSION=0.36.1
 ARG VAULT_VERSION=1.7.3
+ARG GLIBC_VERSION=2.34-r0
 
 RUN mkdir -p /opt/aoepeople/bin && \
     apk add --no-cache ca-certificates gnupg curl gzip jq procps tar wget unzip git bash zsh  docker openrc python3 py3-pip && \
@@ -68,13 +69,34 @@ RUN curl -sSL -o vault.zip https://releases.hashicorp.com/vault/${VAULT_VERSION}
     rm vault.zip && \
     vault --version
 
-RUN if [ "${TARGETARCH}" = "amd64" ] ; then \
-    curl -sSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"; \
-  else \
-    curl -sSL "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip"; \
-  fi && \
-  unzip -q awscliv2.zip && \
-  ./aws/install && \
-  rm -rf awscliv2.zip && \
-  rm -rf aws/ && \
-  aws --version
+# see https://github.com/team-carepay/openjdk-docker/blob/main/alpine/Dockerfile#L26
+RUN apk add --no-cache --virtual binutils-pack \
+          binutils \
+      && \
+      curl -sL https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub -o /etc/apk/keys/sgerrand.rsa.pub && \
+      curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk && \
+      curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-bin-${GLIBC_VERSION}.apk && \
+      apk add --no-cache --virtual glibc-pack \
+          glibc-${GLIBC_VERSION}.apk \
+          glibc-bin-${GLIBC_VERSION}.apk \
+      && \
+      apk --no-cache del \
+          binutils-pack \
+      && \
+      rm glibc-${GLIBC_VERSION}.apk && \
+      rm glibc-bin-${GLIBC_VERSION}.apk && \
+      if [ "${TARGETARCH}" = "amd64" ] ; then \
+          curl -sSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"; \
+        else \
+          curl -sSL "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip"; \
+        fi && \
+      unzip -q awscliv2.zip && \
+      aws/install && \
+      rm -rf \
+          awscliv2.zip \
+          aws \
+          /usr/local/aws-cli/v2/current/dist/aws_completer \
+          /usr/local/aws-cli/v2/current/dist/awscli/data/ac.index \
+          /usr/local/aws-cli/v2/current/dist/awscli/examples \
+      && \
+      find /usr/local/aws-cli/v2/current/dist/awscli/botocore/data -name examples-1.json -delete;
