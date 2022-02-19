@@ -27,6 +27,8 @@ env:
   TERRAGRUNT_VERSION: 0.36.1
   # renovate: datasource=github-releases depName=hashicorp/vault
   VAULT_VERSION: 1.9.3
+  # renovate: datasource=github-releases depName=sigstore/cosign
+  COSIGN_VERSION: 1.5.2
 
 jobs:
   # Push image to GitHub Packages.
@@ -77,6 +79,7 @@ jobs:
           echo ::set-output name=docker_image::${DOCKER_IMAGE}
           echo ::set-output name=terraform_version::${TERRAFORM_VERSION:1}
           echo ::set-output name=terragrunt_version::${TERRAGRUNT_VERSION}
+          echo ::set-output name=cosign_version::${COSIGN_VERSION}
           echo ::set-output name=vault_version::${VAULT_VERSION}
           echo ::set-output name=kubectl_version::${KUBECTL_VERSION}
           echo ::set-output name=helm_version::${HELM_VERSION}
@@ -109,6 +112,7 @@ jobs:
             TERRAFORM_VERSION=${{ steps.prep.outputs.terraform_version }}
             TERRAGRUNT_VERSION=${{ steps.prep.outputs.terragrunt_version }}
             VAULT_VERSION=${{ steps.prep.outputs.vault_version }}
+            COSGIN_VERSION=${{ steps.prep.outputs.cosign_version }}
           push: true
           tags: ${{ steps.prep.outputs.ubuntu_tags }}
 
@@ -126,6 +130,7 @@ jobs:
             TERRAFORM_VERSION=${{ steps.prep.outputs.terraform_version }}
             TERRAGRUNT_VERSION=${{ steps.prep.outputs.terragrunt_version }}
             VAULT_VERSION=${{ steps.prep.outputs.vault_version }}
+            COSGIN_VERSION=${{ steps.prep.outputs.cosign_version }}
           push: true
           tags: ${{ steps.prep.outputs.buster_tags }}
 
@@ -143,5 +148,6 @@ jobs:
             TERRAFORM_VERSION=${{ steps.prep.outputs.terraform_version }}
             TERRAGRUNT_VERSION=${{ steps.prep.outputs.terragrunt_version }}
             VAULT_VERSION=${{ steps.prep.outputs.vault_version }}
+            COSGIN_VERSION=${{ steps.prep.outputs.cosign_version }}
           push: true
           tags: ${{ steps.prep.outputs.alpine_tags }}

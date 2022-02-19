@@ -1,3 +1,5 @@
+FROM gcr.io/kaniko-project/executor:debug as kaniko
+
 FROM alpine:3.15
 LABEL maintainer "aoepeople <aoepeople@aoe.com>"
 ARG TARGETARCH
@@ -17,6 +19,7 @@ ARG TERRAFORM_VERSION=0.15.5
 ARG TERRAGRUNT_VERSION=0.36.1
 ARG VAULT_VERSION=1.7.3
 ARG GLIBC_VERSION=2.34-r0
+ARG COSIGN_VERSION=1.5.2
 
 RUN mkdir -p /opt/aoepeople/bin && \
     apk add --no-cache ca-certificates gnupg curl gzip jq procps tar wget unzip git bash zsh  docker openrc python3 py3-pip && \
@@ -100,3 +103,11 @@ RUN apk add --no-cache --virtual binutils-pack \
           /usr/local/aws-cli/v2/current/dist/awscli/examples \
       && \
       find /usr/local/aws-cli/v2/current/dist/awscli/botocore/data -name examples-1.json -delete;
+
+RUN curl -sSL -o cosign https://github.com/sigstore/cosign/releases/download/v${COSIGN_VERSION}/cosign-linux-${TARGETARCH} && \
+    install -o root -g root -m 0755 cosign /opt/aoepeople/bin/cosign && \
+    cosign version
+
+COPY --from=kaniko /kaniko/executor /kaniko/
+COPY --from=kaniko /kaniko/docker-credential-ecr-login /kaniko/
+ENV PATH=/kaniko:$PATH

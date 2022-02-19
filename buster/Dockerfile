@@ -1,4 +1,4 @@
-
+FROM gcr.io/kaniko-project/executor:debug as kaniko
 
 FROM docker.io/bitnami/minideb:buster
 LABEL maintainer "aoepeople <aoepeople@aoe.com>"
@@ -19,6 +19,7 @@ ARG KUBECTL_VERSION=1.23.3
 ARG TERRAFORM_VERSION=0.15.5
 ARG TERRAGRUNT_VERSION=0.36.1
 ARG VAULT_VERSION=1.7.3
+ARG COSIGN_VERSION=1.5.2
 
 RUN mkdir -p /opt/aoepeople/bin && \
     install_packages ca-certificates gnupg curl gzip jq procps tar wget unzip git awscli
@@ -79,3 +80,11 @@ RUN if [ "${TARGETARCH}" = "amd64" ] ; then \
   rm -rf awscliv2.zip && \
   rm -rf aws/ && \
   aws --version
+
+RUN curl -sSL -o cosign https://github.com/sigstore/cosign/releases/download/v${COSIGN_VERSION}/cosign-linux-${TARGETARCH} && \
+    install -o root -g root -m 0755 cosign /opt/aoepeople/bin/cosign && \
+    cosign version
+
+COPY --from=kaniko /kaniko/executor /kaniko/
+COPY --from=kaniko /kaniko/docker-credential-ecr-login /kaniko/
+ENV PATH=/kaniko:$PATH
