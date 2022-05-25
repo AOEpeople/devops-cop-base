@@ -63,7 +63,7 @@ jobs:
                 sleep 10
             done
           else
-            TERRAFORM_VERSION="$(curl -sSL https://api.github.com/repos/hashicorp/terraform/tags | jq -r '.[] | .name' | grep -v "-dev"| head -n1)"
+            TERRAFORM_VERSION="$(curl -sSL https://api.github.com/repos/hashicorp/terraform/tags | jq -r '.[] | .name' | grep -v "\-dev"| head -n1)"
           fi
 
           SHORTREF=${GITHUB_SHA::8}
