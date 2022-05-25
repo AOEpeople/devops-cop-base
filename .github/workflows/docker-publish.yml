@@ -101,6 +101,24 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Build Alpine
+        uses: docker/build-push-action@v2
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          context: ./alpine
+          file: ./alpine/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          build-args: |
+            HELMFILE_VERSION=${{  steps.prep.outputs.helmfile_version }}
+            HELM_VERSION=${{  steps.prep.outputs.helm_version }}
+            KUBECTL_VERSION=${{  steps.prep.outputs.kubectl_version }}
+            TERRAFORM_VERSION=${{ steps.prep.outputs.terraform_version }}
+            TERRAGRUNT_VERSION=${{ steps.prep.outputs.terragrunt_version }}
+            VAULT_VERSION=${{ steps.prep.outputs.vault_version }}
+            COSGIN_VERSION=${{ steps.prep.outputs.cosign_version }}
+          push: ${{ github.ref_name == 'main' }}
+          tags: ${{ steps.prep.outputs.alpine_tags }}
+
       - name: Build Ubuntu
         uses: docker/build-push-action@v2
         with:
@@ -136,21 +154,3 @@ jobs:
             COSGIN_VERSION=${{ steps.prep.outputs.cosign_version }}
           push: ${{ github.ref_name == 'main' }}
           tags: ${{ steps.prep.outputs.buster_tags }}
-
-      - name: Build Alpine
-        uses: docker/build-push-action@v2
-        with:
-          builder: ${{ steps.buildx.outputs.name }}
-          context: ./alpine
-          file: ./alpine/Dockerfile
-          platforms: linux/amd64,linux/arm64
-          build-args: |
-            HELMFILE_VERSION=${{  steps.prep.outputs.helmfile_version }}
-            HELM_VERSION=${{  steps.prep.outputs.helm_version }}
-            KUBECTL_VERSION=${{  steps.prep.outputs.kubectl_version }}
-            TERRAFORM_VERSION=${{ steps.prep.outputs.terraform_version }}
-            TERRAGRUNT_VERSION=${{ steps.prep.outputs.terragrunt_version }}
-            VAULT_VERSION=${{ steps.prep.outputs.vault_version }}
-            COSGIN_VERSION=${{ steps.prep.outputs.cosign_version }}
-          push: ${{ github.ref_name == 'main' }}
-          tags: ${{ steps.prep.outputs.alpine_tags }}
