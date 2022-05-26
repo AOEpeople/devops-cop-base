@@ -22,7 +22,7 @@ env:
   # renovate: datasource=github-releases depName=helm/helm
   HELM_VERSION: 3.8.0
   # renovate: datasource=github-releases depName=kubernetes/kubernetes
-  KUBECTL_VERSION: 1.23.3
+  KUBECTL_VERSION: v1.24.1
   # renovate: datasource=github-releases depName=gruntwork-io/terragrunt
   TERRAGRUNT_VERSION: 0.36.1
   # renovate: datasource=github-releases depName=hashicorp/vault
