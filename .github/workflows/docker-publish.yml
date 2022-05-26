@@ -18,7 +18,7 @@ on:
 
 env:
   # renovate: datasource=github-releases depName=roboll/helmfile
-  HELMFILE_VERSION: 0.143.0
+  HELMFILE_VERSION: v0.144.0
   # renovate: datasource=github-releases depName=helm/helm
   HELM_VERSION: 3.8.0
   # renovate: datasource=github-releases depName=kubernetes/kubernetes
