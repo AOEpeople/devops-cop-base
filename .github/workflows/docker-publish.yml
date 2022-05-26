@@ -24,7 +24,7 @@ env:
   # renovate: datasource=github-releases depName=kubernetes/kubernetes
   KUBECTL_VERSION: 1.23.3
   # renovate: datasource=github-releases depName=gruntwork-io/terragrunt
-  TERRAGRUNT_VERSION: 0.36.1
+  TERRAGRUNT_VERSION: v0.37.1
   # renovate: datasource=github-releases depName=hashicorp/vault
   VAULT_VERSION: v1.10.3
   # renovate: datasource=github-releases depName=sigstore/cosign
