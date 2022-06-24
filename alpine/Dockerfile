@@ -1,6 +1,6 @@
 FROM gcr.io/kaniko-project/executor:debug as kaniko
 
-FROM alpine:3.15
+FROM alpine:3.16
 LABEL maintainer "aoepeople <aoepeople@aoe.com>"
 ARG TARGETARCH
 
