@@ -88,8 +88,8 @@ RUN curl -sSL -o vault.zip https://releases.hashicorp.com/vault/${VAULT_VERSION}
     rm vault.zip && \
     vault --version
 
-COPY --from=builder /usr/local/aws-cli/ /usr/local/aws-cli/
-COPY --from=builder /aws-cli-bin/ /usr/local/bin/
+COPY --from=awsbuilder /usr/local/aws-cli/ /usr/local/aws-cli/
+COPY --from=awsbuilder /aws-cli-bin/ /usr/local/bin/
 
 RUN curl -sSL -o cosign https://github.com/sigstore/cosign/releases/download/v${COSIGN_VERSION}/cosign-linux-${TARGETARCH} && \
     install -o root -g root -m 0755 cosign /opt/aoepeople/bin/cosign && \
