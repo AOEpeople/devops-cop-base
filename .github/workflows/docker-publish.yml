@@ -72,18 +72,18 @@ jobs:
           BUSTER_TAGS="${DOCKER_IMAGE}:${VERSION}-buster,${DOCKER_IMAGE}:${TERRAFORM_VERSION}-buster"
 
           # Set output parameters.
-          echo ::set-output name=shortref::${SHORTREF}
-          echo ::set-output name=ubuntu_tags::${UBUNTU_TAGS}
-          echo ::set-output name=alpine_tags::${ALPINE_TAGS}
-          echo ::set-output name=buster_tags::${BUSTER_TAGS}
-          echo ::set-output name=docker_image::${DOCKER_IMAGE}
-          echo ::set-output name=terraform_version::${TERRAFORM_VERSION:1}
-          echo ::set-output name=terragrunt_version::${TERRAGRUNT_VERSION:1}
-          echo ::set-output name=cosign_version::${COSIGN_VERSION}
-          echo ::set-output name=vault_version::${VAULT_VERSION:1}
-          echo ::set-output name=kubectl_version::${KUBECTL_VERSION:1}
-          echo ::set-output name=helm_version::${HELM_VERSION:1}
-          echo ::set-output name=helmfile_version::${HELMFILE_VERSION:1}
+          echo "shortref=${SHORTREF}">> $GITHUB_OUTPUT
+          echo "ubuntu_tags=${UBUNTU_TAGS}" >> $GITHUB_OUTPUT
+          echo "alpine_tags=${ALPINE_TAGS}" >> $GITHUB_OUTPUT
+          echo "buster_tags=${BUSTER_TAGS}" >> $GITHUB_OUTPUT
+          echo "docker_image=${DOCKER_IMAGE}" >> $GITHUB_OUTPUT
+          echo "terraform_version=${TERRAFORM_VERSION:1}" >> $GITHUB_OUTPUT
+          echo "terragrunt_version=${TERRAGRUNT_VERSION:1}" >> $GITHUB_OUTPUT
+          echo "cosign_version=${COSIGN_VERSION}" >> $GITHUB_OUTPUT
+          echo "vault_version=${VAULT_VERSION:1}" >> $GITHUB_OUTPUT
+          echo "kubectl_version=${KUBECTL_VERSION:1}" >> $GITHUB_OUTPUT
+          echo "helm_version=${HELM_VERSION:1}" >> $GITHUB_OUTPUT
+          echo "helmfile_version=${HELMFILE_VERSION:1}" >> $GITHUB_OUTPUT
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@master
