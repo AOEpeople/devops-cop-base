@@ -26,7 +26,7 @@ env:
   # renovate: datasource=github-releases depName=gruntwork-io/terragrunt
   TERRAGRUNT_VERSION: v0.37.1
   # renovate: datasource=github-releases depName=hashicorp/vault
-  VAULT_VERSION: v1.10.3
+  VAULT_VERSION: v1.12.1
   # renovate: datasource=github-releases depName=sigstore/cosign
   COSIGN_VERSION: v1.9.0
 
