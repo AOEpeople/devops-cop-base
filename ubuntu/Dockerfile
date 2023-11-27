@@ -1,6 +1,6 @@
 FROM gcr.io/kaniko-project/executor:debug as kaniko
 
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 ARG TARGETARCH
 ARG TERRAFORM_VERSION=0.15.5
 ARG TERRAGRUNT_VERSION=0.36.1
