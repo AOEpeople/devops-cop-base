@@ -1,5 +1,5 @@
 
-ARG ALPINE_VERSION=3.16
+ARG ALPINE_VERSION=3.19
 FROM python:3.10.5-alpine${ALPINE_VERSION} as awsbuilder
 ARG AWS_CLI_VERSION=2.7.20
 RUN apk add --no-cache git unzip groff build-base libffi-dev cmake
