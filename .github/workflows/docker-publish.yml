@@ -20,7 +20,7 @@ env:
   # renovate: datasource=github-releases depName=roboll/helmfile
   HELMFILE_VERSION: v0.144.0
   # renovate: datasource=github-releases depName=helm/helm
-  HELM_VERSION: v3.10.3
+  HELM_VERSION: v3.14.3
   # renovate: datasource=github-releases depName=kubernetes/kubernetes
   KUBECTL_VERSION: v1.28.4
   # renovate: datasource=github-releases depName=gruntwork-io/terragrunt
