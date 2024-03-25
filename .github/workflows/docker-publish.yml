@@ -28,7 +28,7 @@ env:
   # renovate: datasource=github-releases depName=hashicorp/vault
   VAULT_VERSION: v1.12.2
   # renovate: datasource=github-releases depName=sigstore/cosign
-  COSIGN_VERSION: v1.13.1
+  COSIGN_VERSION: v1.13.6
 
 jobs:
   # Push image to GitHub Packages.
